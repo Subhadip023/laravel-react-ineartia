@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -12,8 +13,15 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+       
+        if (auth()->user()->hasPermissionTo( 'show users')) {
+            return "can show user";
+        }
+
+        return "not permisttion to show  users";
+    
     }
+    
 
     /**
      * Show the form for creating a new resource.

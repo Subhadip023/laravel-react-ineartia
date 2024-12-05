@@ -4,6 +4,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -17,9 +18,10 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/admin',function(){
+Route::get('/admin', function () {
     return Inertia::render('Admin/Index');
-})->name('admin')->middleware(['auth', 'role:admin|super-admin']);;
+})->name('admin')->middleware(['auth', 'role:admin|super-admin']);
+;
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -30,13 +32,15 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+Route::resource('users', UserController::class)
+    ->middleware('auth');
 
-Route::resource('users', RolePermissionController::class);
-Route::post('role/assign/user', [RoleController::class, 'assignUser'])->middleware('auth')->name('assignUser');
+
+Route::post('role/assign/user', [RoleController::class, 'assignUser'])->middleware(['auth','role:admin|super-admin'])->name('assignUser');
 Route::put('role/update-user/{role}', [RoleController::class, 'updateUser'])->middleware('auth')->name('updateUser');
 
-Route::put('role/addPermissions/{role}', [RoleController::class, 'addPermissions'])->middleware('auth')->name('addPermissions');
-Route::resource('roles', RoleController::class)->middleware('auth');
+Route::put('role/addPermissions/{role}', [RoleController::class, 'addPermissions'])->middleware(['auth','role:admin|super-admin'])->name('addPermissions');
+Route::resource('roles', RoleController::class)->middleware(['auth','role:admin|super-admin']);
 
 Route::resource('permissions', PermissionController::class)
     ->middleware(['auth', 'role:admin|super-admin']);

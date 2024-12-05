@@ -27,13 +27,7 @@ class RoleController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(Request $request)
-    {
-        dd($request);
-    }
+   
 
     /**
      * Store a newly created resource in storage.
@@ -113,6 +107,10 @@ class RoleController extends Controller
             'users.*' => 'exists:users,id',
         ]);
 
+
+        if ($request->role->name=='super-admin' && auth()->user()->role->name=='super-admin') {
+            return to_route('roles.index');
+        }
 
 
 

@@ -163,17 +163,11 @@ function Index({ roles, flash, permissions }) {
                                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
                             </svg> Add a new role
                         </button>
-                        <button
-                            onClick={() => setOpenPermissionForm(true)}
-                            className="border-2 border-green-700 p-2 rounded-md hover:scale-110 duration-200 hover:text-green-800 flex gap-x-2 items-center text-green-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="scale:150 bi bi-plus-circle-fill" viewBox="0 0 16 16">
-                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
-                            </svg> Add a new permission
-                        </button>
+                      
                     </div>
 
                     <div className="lg:w-2/3 w-full mx-auto overflow-auto">
-                        <table className="table-auto w-full text-left whitespace-no-wrap">
+                        <table className="table-auto w-full  text-left whitespace-no-wrap">
                             <thead>
                                 <tr>
                                     <th className="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">
@@ -290,18 +284,29 @@ function Index({ roles, flash, permissions }) {
                 </form>
             </Popup>
 
-            <section className="text-gray-600 body-font mt-20">
+            <section className="text-gray-600  body-font mt-20">
                 <div className="container px-5  mx-auto">
-                    <div className="flex flex-col text-center w-full mb-10">
+                    <div className="flex flex-col text-center w-full  mb-10">
 
 
 
                         <h1 className="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">Permission Table</h1>
                     </div>
-                    <div className="lg:w-2/3 w-full mx-auto overflow-auto">
-                        <table className="table-auto w-full text-left whitespace-no-wrap">
-                            <thead>
-                                <tr>
+
+                    <div className="flex gap-x-20 justify-center items-center mb-10">
+                       
+                        <button
+                            onClick={() => setOpenPermissionForm(true)}
+                            className="border-2 border-green-700 p-2 rounded-md hover:scale-110 duration-200 hover:text-green-800 flex gap-x-2 items-center text-green-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="scale:150 bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
+                            </svg> Add a new permission
+                        </button>
+                    </div>
+                    <div className="lg:w-2/3 w-full  mx-auto overflow-auto">
+                        <table className="table-auto w-full text-left whitespace-no-wrap ">
+                            <thead >
+                                <tr className="text-2xl font-bold">
                                     <th className="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">
                                         #
                                     </th>
