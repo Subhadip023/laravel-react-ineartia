@@ -13,9 +13,9 @@ class UserController extends Controller
      */
     public function index()
     {
-       
+       $users=User::all();
         if (auth()->user()->hasPermissionTo( 'show users')) {
-            return "can show user";
+            return inertia('Admin/User',['users'=>$users]);
         }
 
         return "not permisttion to show  users";

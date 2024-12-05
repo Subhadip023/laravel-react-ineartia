@@ -170,7 +170,7 @@ class RoleController extends Controller
         // Sync users to the role
         $role->users()->sync($request->users);
     
-        $roles = Role::with(['permissions', 'users'])->get();
+        $roles = Role::with(relations: ['permissions', 'users'])->get();
         $users = User::all();
 
         // return Inertia::render('Roles/Index', ['roles' => $roles, 'users' => $users]); 
