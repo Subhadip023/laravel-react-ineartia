@@ -19,9 +19,11 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::with('permissions', 'users')->get();
+        $permissions= Permission::all();
         return inertia('Roles/Index', [
             'roles' => $roles,
-            'flash' => session()->only(['success', 'error']),
+            'flash' => session()->only(['success', 'error'],
+    ),    'permissions'=>$permissions
         ]);
     }
 
@@ -38,9 +40,19 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate the incoming request data
+        $request->validate([
+            'name' => 'required|string|max:255|unique:roles,name',      
+        ]);
+    
+        // Create a new role
+        $role = Role::create([
+            'name' => $request->input('name'),
+        ]);
+    
+        // Return the stored role (optional)
+        return  to_route('roles.index')->with('success', 'Role Created successfully.');;
     }
-
     /**
      * Display the specified resource.
      */

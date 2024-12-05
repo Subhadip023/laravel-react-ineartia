@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RolePermissionController;
@@ -18,7 +19,7 @@ Route::get('/', function () {
 
 Route::get('/admin',function(){
     return Inertia::render('Admin/Index');
-});
+})->name('admin')->middleware(['auth', 'role:admin|super-admin']);;
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -36,6 +37,12 @@ Route::put('role/update-user/{role}', [RoleController::class, 'updateUser'])->mi
 
 Route::put('role/addPermissions/{role}', [RoleController::class, 'addPermissions'])->middleware('auth')->name('addPermissions');
 Route::resource('roles', RoleController::class)->middleware('auth');
+
+Route::resource('permissions', PermissionController::class)
+    ->middleware(['auth', 'role:admin|super-admin']);
+
+
+
 
 
 
