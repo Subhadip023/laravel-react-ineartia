@@ -13,7 +13,7 @@ class UserController extends Controller
      */
     public function index()
     {
-       $users=User::all();
+        $users = User::with('roles', 'permissions')->get();
         if (auth()->user()->hasPermissionTo( 'show users')) {
             return inertia('Admin/User',['users'=>$users]);
         }
