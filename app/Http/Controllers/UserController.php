@@ -3,25 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
-    {
-        $users = User::with('roles', 'permissions')->get();
-        if (auth()->user()->hasPermissionTo( 'show users')) {
-            return inertia('Admin/User',['users'=>$users]);
-        }
+{
+    // Include 'addresses' in the relationships being loaded
+    $users = User::with('roles', 'permissions', 'addresses')->paginate(5);
 
-        return "not permisttion to show  users";
-    
+    $countries=DB::table('countries')->get();
+
+    if (auth()->user()->hasPermissionTo('show users')) {
+        return inertia('Admin/User', ['users' => $users,'countries'=>$countries]);
     }
-    
+
+    abort(403, 'Cannot see user');
+}
+
+
 
     /**
      * Show the form for creating a new resource.

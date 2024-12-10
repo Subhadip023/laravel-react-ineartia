@@ -1,6 +1,6 @@
 import { Head, Link } from "@inertiajs/react";
 
-export default function Welcome({ auth, laravelVersion, phpVersion }) {
+export default function Welcome({roles,auth, laravelVersion, phpVersion }) {
     const handleImageError = () => {
         document
             .getElementById("screenshot-container")
@@ -11,6 +11,8 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
             ?.classList.add("!flex-row");
         document.getElementById("background")?.classList.add("!hidden");
     };
+
+    // console.log(roles)
 
     return (
         <>
@@ -38,8 +40,16 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                 </svg>
                             </div>
                             <nav className="-mx-3 flex flex-1 justify-end">
+                            {/* {roles.includes("admin") && <p>Welcome Admin!</p>} */}
+                               
                                 {auth.user ? (
+                                    roles.includes('admin')?
                                     <Link
+                                        href={route("admin")}
+                                        className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                    >
+                                        Admin
+                                    </Link>:<Link
                                         href={route("dashboard")}
                                         className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                                     >

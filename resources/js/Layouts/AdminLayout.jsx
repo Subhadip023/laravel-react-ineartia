@@ -8,15 +8,15 @@ function AdminLayout({ Children }) {
     const [showSideBar, setShowSideBar] = useState(true);
     const [showUserNav, setShowUserNav] = useState(false);
 
-    useEffect(()=>{
+    useEffect(() => {
 
-if (showUserNav) {
-    setTimeout(() => {
-        setShowUserNav(false)
-    }, 3000);
-}
+        if (showUserNav) {
+            setTimeout(() => {
+                setShowUserNav(false)
+            }, 3000);
+        }
 
-    },[showUserNav])
+    }, [showUserNav])
 
     return (
         <>
@@ -63,57 +63,57 @@ if (showUserNav) {
 
                     </div>
                     {
-    showUserNav && (<div className='bg-gray-300 shadow-md rounded-md w-44 py-5 fixed bottom-14 left-5 z-10'>
+                        showUserNav && (<div className='bg-gray-300 shadow-md rounded-md w-44 py-5 fixed bottom-16 left-3 z-10'>
 
-<div className="mb-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>
-                                Profile
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                method="post"
-                                href={route('logout')}
-                                as="button"
-                            >
-                                Log Out
-                            </ResponsiveNavLink>
-                        </div>
+                            <div className="mb-3 space-y-1">
+                                <ResponsiveNavLink href={route('profile.edit')}>
+                                    Profile
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink
+                                    method="post"
+                                    href={route('logout')}
+                                    as="button"
+                                >
+                                    Log Out
+                                </ResponsiveNavLink>
+                            </div>
 
 
-    </div>)
-}
+                        </div>)
+                    }
 
                     <div className='h-[7%] flex items-center border-t justify-around'>
 
 
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQABqQIdskCD9BK0I81EbVfV9tTz320XvJ35A&s" className='w-12 rounded-full ' alt="" onClick={()=>setShowUserNav((prev)=>!prev)} />
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQABqQIdskCD9BK0I81EbVfV9tTz320XvJ35A&s" className='w-12 rounded-full ' alt="" onClick={() => setShowUserNav((prev) => !prev)} />
 
                         <h3 className='text-lg'>{user.name}</h3>
 
                     </div>
-                  
+
                 </aside>
 
 
                 <main className={`${showSideBar ? 'w-10/12' : 'w-full'} flex flex-wrap  items-start bg-slate-100  h-screen overflow-y-auto scroll-bar p-5`}>
 
 
-                   
+
                     <div className='w-full '>
-                    {!showSideBar &&
+                        {!showSideBar &&
 
-(<div className=' w-fit sticky px-2 flex mt-3 '>
+                            (<div className=' w-fit sticky px-2 flex mt-3 '>
 
-    <button onClick={() => setShowSideBar((prev) => !prev)}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-layout-text-sidebar-reverse text-gray-500 hover:text-gray-400" viewBox="0 0 16 16">
-            <path d="M12.5 3a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zm0 3a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zm.5 3.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 .5-.5m-.5 2.5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1z" />
-            <path d="M16 2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zM4 1v14H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm1 0h9a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5z" />
-        </svg>
+                                <button onClick={() => setShowSideBar((prev) => !prev)}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-layout-text-sidebar-reverse text-gray-500 hover:text-gray-400" viewBox="0 0 16 16">
+                                        <path d="M12.5 3a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zm0 3a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zm.5 3.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 .5-.5m-.5 2.5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1z" />
+                                        <path d="M16 2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zM4 1v14H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm1 0h9a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5z" />
+                                    </svg>
 
-    </button>
+                                </button>
 
-</div>)
+                            </div>)
 
-}
+                        }
 
 
                         {Children}

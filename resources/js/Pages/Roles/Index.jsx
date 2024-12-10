@@ -163,7 +163,7 @@ function Index({ roles, flash, permissions }) {
                                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
                             </svg> Add a new role
                         </button>
-                      
+
                     </div>
 
                     <div className="lg:w-2/3 w-full mx-auto overflow-auto">
@@ -294,7 +294,7 @@ function Index({ roles, flash, permissions }) {
                     </div>
 
                     <div className="flex gap-x-20 justify-center items-center mb-10">
-                       
+
                         <button
                             onClick={() => setOpenPermissionForm(true)}
                             className="border-2 border-green-700 p-2 rounded-md hover:scale-110 duration-200 hover:text-green-800 flex gap-x-2 items-center text-green-700">
