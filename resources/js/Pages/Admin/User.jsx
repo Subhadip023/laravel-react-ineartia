@@ -1,14 +1,20 @@
 import Popup from "@/Components/Popup";
 import { Link, useForm } from "@inertiajs/react";
 import React from "react";
-function User({ users = [], countries = [] }) {
+import axios from "axios";
+
+function User({ users = [], countries }) {
 
 
-  const [openAddressFrom, setOpenAddressFrom] = React.useState(false);
+  const [openAddressFrom, setOpenAddressFrom] = React.useState(true);
   const { data: addressData, setData: setAddressData, post: addressPost } = useForm({
     country: '',
     state: '',
+    city: '',
+    street: "",
   })
+  const [states, setStates] = React.useState([])
+  const [cities, setCities] = React.useState([])
 
   // const [states, setStates] = React.useState([]);
   const perPage = users.per_page;
@@ -16,7 +22,53 @@ function User({ users = [], countries = [] }) {
   const startIndex = (currentPage - 1) * perPage;
 
 
-  
+  const getStates = async (e) => {
+    e.preventDefault();
+    const selectedCountry = e.target.value;
+
+    // Update the selected country in the form data
+    setAddressData((prev) => ({
+      ...prev,
+      country: selectedCountry,
+    }));
+
+    try {
+      // Send an Axios POST request to fetch states
+      const response = await axios.post(route("states"), {
+        countryId: selectedCountry,
+      });
+
+      // Log and update the states with the response data
+      console.log("States fetched successfully:");
+      setStates(response.data.data || []);
+    } catch (error) {
+      console.error("Error fetching states:", error);
+    }
+  };
+
+  const stateStates = async (e) => {
+    e.preventDefault();
+    const selectedStates = e.target.value;
+
+    try {
+      const res = await axios.post(route('cities'), {
+        stateId: selectedStates,
+      });
+
+      // console.log(res.data);
+      setCities(res.data.data);
+
+      // This will print the data returned from the server
+    } catch (error) {
+      console.error('Error fetching cities:', error);
+    }
+  };
+
+
+
+
+
+
 
 
   return (
@@ -168,18 +220,61 @@ function User({ users = [], countries = [] }) {
 
       {/* Address form here  */}
       <Popup isOpen={openAddressFrom} onClose={() => setOpenAddressFrom(false)}>
-        <div className=" py-10 ">
+        <div className="w-full flex flex-col">
+          <h3 className="text-2xl font-bold text-center pb-5">Add Address </h3>
 
-          <select name="country" value={addressData.country} onChange={selectCountry}>
-
-            {countries.map((country, index) =>
-              <option key={index} value={country.id}>{country.name}</option>
-            )}
-
+          <label htmlFor="country-select">Select Your Country:</label>
+          <select id="country-select" onChange={getStates} defaultValue="" >
+            <option value="" disabled>Select Your country</option>
+            {Array.isArray(countries) &&
+              countries.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
           </select>
+          
+              <label htmlFor="state-select">Select Your State:</label>
+              <select id="state-select" onChange={stateStates} defaultValue="" selectd>
+               
 
-         
+                {states.length==0 ? <option value="" className="text-red-500 bg-red-500 focus:bg-green-500">Please Select Your Country First</option>:  <option value="" disabled>Select Your State</option>}
+                {Array.isArray(states) &&
+                  states.map((state) => (
+                    <option key={state.id} value={state.id}>
+                      {state.name}
+                    </option>
+                  ))}
+              </select>
+
+
+
+            
+
+
+          {cities.length > 0 ? (
+            <>
+              <label htmlFor="city-select">Select Your City:</label>
+              <select id="city-select" onChange={(e) => setAddressData({ ...addressData, city: e.target.value })} defaultValue="" selectd>
+                <option value="" disabled>Select a State</option>
+                {Array.isArray(cities) &&
+                  cities.map((state) => (
+                    <option key={state.id} value={state.id}>
+                      {state.name}
+                    </option>
+                  ))}
+              </select>
+
+
+
+            </>
+          ) : null}
+
+
+
+
         </div>
+
 
       </Popup>
 

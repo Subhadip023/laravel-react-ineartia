@@ -5,7 +5,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
@@ -19,7 +21,7 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-        'roles' => $user->getRoleNames(),
+        'roles' => $user ? $user->getRoleNames() : [],
 
     ]);
 });
@@ -52,21 +54,35 @@ Route::resource('permissions', PermissionController::class)
     ->middleware(['auth', 'role:admin|super-admin']);
 
 
+Route::post('/states', function (Request $request) {
 
 
-Route::post('/state', function (Request $request) {
-    // Validate the country ID
-    $request->validate([
-        'country' => 'required|exists:countries,id', // Ensure country exists in the countries table
+
+    $states = DB::table('states')
+        ->where('country_id', $request->input('countryId'))
+        ->get();
+
+    return response()->json([
+        'success' => true,
+        'data' => $states,
     ]);
+})->name('states');
 
-    // Fetch the states associated with the country's id
-    $states = DB::table('states')->where('country_id', $request->input('country'))->get();
 
-    // Return the states as a JSON response
-    return response()->json($states);
-})->name('state');
+Route::post('/cities',function (Request $request)  {
+
+    $cities=DB::table('cities')->where('state_id',$request->input('stateId'))->get();
+    return response()->json([
+        'success'=>true,
+        'data'=>$cities
+    ]);
     
+})->name('cities');
+
+
+
+
+
 
 
 
