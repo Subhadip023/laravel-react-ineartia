@@ -74,7 +74,7 @@ Route::post('/cities',function (Request $request)  {
     $cities=DB::table('cities')->where('state_id',$request->input('stateId'))->get();
     return response()->json([
         'success'=>true,
-        'data'=>$cities
+        'data'=>$cities,
     ]);
     
 })->name('cities');

@@ -2,53 +2,63 @@ import Popup from "@/Components/Popup";
 import { Link, useForm } from "@inertiajs/react";
 import React from "react";
 import axios from "axios";
-
+import Select from "react-select";
 function User({ users = [], countries }) {
 
 
   const [openAddressFrom, setOpenAddressFrom] = React.useState(true);
+  const [states, setStates] = React.useState([])
+  const [cities, setCities] = React.useState([])
   const { data: addressData, setData: setAddressData, post: addressPost } = useForm({
     country: '',
     state: '',
     city: '',
     street: "",
-  })
-  const [states, setStates] = React.useState([])
-  const [cities, setCities] = React.useState([])
+  });
 
-  // const [states, setStates] = React.useState([]);
+  const countryOptions = countries?.map((country) => (
+    {
+      value: country.id,
+      label: country.name,
+    }));
+
+  const stateOptions = states?.map((state) => ({
+    value: state.id,
+    label: state.name
+  }));
+
+  const citiesOptions = cities?.map((city) => ({
+    value: city.id,
+    label: city.name,
+  }))
+
+
   const perPage = users.per_page;
   const currentPage = users.current_page;
   const startIndex = (currentPage - 1) * perPage;
 
 
-  const getStates = async (e) => {
-    e.preventDefault();
-    const selectedCountry = e.target.value;
-
-    // Update the selected country in the form data
+  const getStates = async (selectedOption) => {
+    const selectedCountry = selectedOption.value;
     setAddressData((prev) => ({
       ...prev,
       country: selectedCountry,
     }));
 
     try {
-      // Send an Axios POST request to fetch states
       const response = await axios.post(route("states"), {
         countryId: selectedCountry,
       });
-
-      // Log and update the states with the response data
-      console.log("States fetched successfully:");
       setStates(response.data.data || []);
     } catch (error) {
       console.error("Error fetching states:", error);
     }
   };
 
-  const stateStates = async (e) => {
-    e.preventDefault();
-    const selectedStates = e.target.value;
+
+  const getCities = async (selectedOption) => {
+    // e.preventDefault();
+    const selectedStates = selectedOption.value;
 
     try {
       const res = await axios.post(route('cities'), {
@@ -220,55 +230,44 @@ function User({ users = [], countries }) {
 
       {/* Address form here  */}
       <Popup isOpen={openAddressFrom} onClose={() => setOpenAddressFrom(false)}>
-        <div className="w-full flex flex-col">
-          <h3 className="text-2xl font-bold text-center pb-5">Add Address </h3>
+        <div className="w-full flex flex-col gap-3">
+          <h3 className="text-2xl font-bold text-center pb-5  h-fit">Add Address </h3>
 
           <label htmlFor="country-select">Select Your Country:</label>
-          <select id="country-select" onChange={getStates} defaultValue="" >
-            <option value="" disabled>Select Your country</option>
-            {Array.isArray(countries) &&
-              countries.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name}
-                </option>
-              ))}
-          </select>
-          
-              <label htmlFor="state-select">Select Your State:</label>
-              <select id="state-select" onChange={stateStates} defaultValue="" selectd>
-               
-
-                {states.length==0 ? <option value="" className="text-red-500 bg-red-500 focus:bg-green-500">Please Select Your Country First</option>:  <option value="" disabled>Select Your State</option>}
-                {Array.isArray(states) &&
-                  states.map((state) => (
-                    <option key={state.id} value={state.id}>
-                      {state.name}
-                    </option>
-                  ))}
-              </select>
+          <Select id="country-select" onChange={getStates}
+            options={countryOptions}
+            placeholder="Search"
 
 
 
-            
+          />
+
+
+
+          <label htmlFor="state-select">Select Your State:</label>
+
+          <Select options={stateOptions} onChange={getCities} />
+
+
+
+
 
 
           {cities.length > 0 ? (
             <>
               <label htmlFor="city-select">Select Your City:</label>
-              <select id="city-select" onChange={(e) => setAddressData({ ...addressData, city: e.target.value })} defaultValue="" selectd>
-                <option value="" disabled>Select a State</option>
-                {Array.isArray(cities) &&
-                  cities.map((state) => (
-                    <option key={state.id} value={state.id}>
-                      {state.name}
-                    </option>
-                  ))}
-              </select>
+              <Select id="city-select" onChange={(selectedOption) => setAddressData({ ...addressData, city: selectedOption.value })}
+                options={citiesOptions}
+
+              />
 
 
 
             </>
           ) : null}
+
+
+          <input type="text" placeholder="Enter Your Street" className="" />
 
 
 
