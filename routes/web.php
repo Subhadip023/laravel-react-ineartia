@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
@@ -29,7 +30,7 @@ Route::get('/', function () {
 Route::get('/admin', function () {
     return Inertia::render('Admin/Index');
 })->name('admin')->middleware(['auth', 'role:admin|super-admin']);
-;
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -55,9 +56,6 @@ Route::resource('permissions', PermissionController::class)
 
 
 Route::post('/states', function (Request $request) {
-
-
-
     $states = DB::table('states')
         ->where('country_id', $request->input('countryId'))
         ->get();
@@ -79,7 +77,7 @@ Route::post('/cities',function (Request $request)  {
     
 })->name('cities');
 
-
+Route::resource('address',AddressController::class);
 
 
 
