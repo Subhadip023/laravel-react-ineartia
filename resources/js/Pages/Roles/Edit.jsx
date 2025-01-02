@@ -1,3 +1,4 @@
+import AdminLayout from '@/Layouts/AdminLayout';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import React from 'react';
@@ -66,14 +67,9 @@ const handlePermissionChange = (e) => {
   };
 
   return (
-    <AuthenticatedLayout
-      header={
-        <h2 className="text-xl font-semibold leading-tight text-gray-800">
-          Edit Role: {role.name}
-        </h2>
-      }
+    <
+    
     >
-      <Head title={`Edit Role: ${role.name}`} />
 
       {/* User Update Section */}
       <section className="text-gray-600 body-font">
@@ -150,8 +146,10 @@ const handlePermissionChange = (e) => {
           </form>
         </div>
       </section>
-    </AuthenticatedLayout>
+    </>
   );
 }
+Edit.layout=page=><AdminLayout Children={page}/>
+// Index.layout = page => <AdminLayout Children={page} />
 
 export default Edit;

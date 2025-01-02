@@ -108,14 +108,19 @@ class RoleController extends Controller
         ]);
 
 
-        if ($request->role->name=='super-admin' && auth()->user()->role->name=='super-admin') {
-            return to_route('roles.index');
-        }
+    
 
 
 
 
         $role = Role::find($request->role);
+        if ($request->role->name=='super-admin' && !auth()->user()->role->name=='super-admin') {
+            return to_route('roles.index')->with('error','You Donot have the permission to add super-admin role to a user');
+        }
+
+
+        // dd( $role,$request,auth()->user());
+
         $role->users()->sync($request->users);
 
         // return redirect()->route('roles.index');   
@@ -168,13 +173,15 @@ class RoleController extends Controller
         ]);
     
         // Sync users to the role
+        if ($role->name=='super-admin' && !auth()->user()->hasRole('super-admin')) {
+            return to_route('roles.index')->with('error','You Donot have the permission to add super-admin role to a user');
+        }
+
+
         $role->users()->sync($request->users);
-    
-        $roles = Role::with(relations: ['permissions', 'users'])->get();
-        $users = User::all();
 
         // return Inertia::render('Roles/Index', ['roles' => $roles, 'users' => $users]); 
-        return to_route('roles.index');
+        return to_route('roles.index')->with('success','Role Updated');
         // return Inertia::render('Roles/Index',['roles'=>$roles,'users'=>$users]);
 
     

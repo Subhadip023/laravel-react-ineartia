@@ -2,6 +2,11 @@ import { Head, Link, usePage } from '@inertiajs/react'
 import React, { useEffect, useState } from 'react'
 import AdminLinks from '@/Components/AdminLinks';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
+
 function AdminLayout({ Children }) {
     const user = usePage().props.auth.user;
     const { props } = usePage();
@@ -10,8 +15,8 @@ function AdminLayout({ Children }) {
 
     const [showSideBar, setShowSideBar] = useState(true);
     const [showUserNav, setShowUserNav] = useState(false);
-    const [showSuccess, setShowSuccess] = useState(false);
-    const [showError, setShowError] = useState(false);
+
+
     useEffect(() => {
 
         if (showUserNav) {
@@ -23,30 +28,39 @@ function AdminLayout({ Children }) {
     }, [showUserNav])
 
     useEffect(() => {
+        if (showUserNav) {
+            setTimeout(() => {
+                setShowUserNav(false);
+            }, 3000);
+        }
+    }, [showUserNav]);
+
+    
+// console.log(successMessage,errorMessage)
+
+    useEffect(() => {
         if (successMessage) {
-            setShowSuccess(true);
-            setTimeout(() => setShowSuccess(false), 2000);
+            toast.success(successMessage, {
+                position: "top-right",
+                autoClose: 2000,
+            });
         }
 
         if (errorMessage) {
-            setShowError(true);
-            setTimeout(() => setShowError(false), 2000);
+            toast.error(errorMessage, {
+                position: "top-center",
+                autoClose: 2000,
+            });
         }
     }, [successMessage, errorMessage]);
+    
+
+
     return (
         <>
             <Head title='admin' />
-            {successMessage && showSuccess && (
-                <div className="bg-green-300 text-center text-green-700 text-lg p-2 z-10 fixed left-0 right-0 mx-10 my-5">
-                    {successMessage}
-                </div>
-            )}
+            <ToastContainer />
 
-            {showError && errorMessage && (
-                <div className="bg-red-500 text-center text-white text-lg p-2 z-10 fixed left-0 right-0 mx-10 my-5">
-                    {errorMessage}
-                </div>
-            )}
             <section id='main-section' className='w-screen h-screen  flex duration-300'>
 
 
@@ -55,7 +69,7 @@ function AdminLayout({ Children }) {
 
                     <div className='flex w-full h-fit items-center border-b bg-slate-800'>
 
-                        <Link href='/admin' className='w-full  text-3xl hover:text-gray-400 flex justify-center font-bold duration-150'>
+                        <Link href='/admin' className={`w-full  text-3xl ${route().current('admin')?"text-gray-400":""} hover:text-gray-400 flex justify-center font-bold duration-150`}>
                             Dashboard
 
 
@@ -82,9 +96,17 @@ function AdminLayout({ Children }) {
 
                     <div className='flex flex-col w-full justify-start py-5 items-center h-[80%] overflow-y-auto  scroll-bar
                     '>
-                        <AdminLinks name={'Users'} href={'/users'} />
-                        <AdminLinks name='Products' href='/products' />
-                        <AdminLinks name={'Roles & Permissions'} href={'/roles'} />
+                        <AdminLinks name={'Users'} href={'/users'}
+                            active={route().current('users.index')}
+
+                        />
+                        <AdminLinks name='Products' href='/products' 
+                                                    active={route().current('product.index')}
+/>
+                        <AdminLinks name={'Roles & Permissions'} href={'/roles'} 
+                                                    active={route().current('roles.index')}
+
+                        />
 
                     </div>
                     {
@@ -121,7 +143,7 @@ function AdminLayout({ Children }) {
 
                 <main className={`${showSideBar ? 'w-10/12' : 'w-full'} flex flex-wrap  items-start bg-slate-100  h-screen overflow-y-auto scroll-bar p-5`}>
 
-                  
+
 
                     <div className='w-full '>
                         {!showSideBar &&
@@ -140,9 +162,9 @@ function AdminLayout({ Children }) {
 
                         }
 
-            
 
-    
+
+
                         {Children}
 
                     </div>

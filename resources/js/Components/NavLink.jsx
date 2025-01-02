@@ -6,7 +6,7 @@ export default function NavLink({
     children,
     ...props
 }) {
-    return (
+    return ( 
         <Link
             {...props}
             className={

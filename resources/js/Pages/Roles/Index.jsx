@@ -3,7 +3,6 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, usePage } from "@inertiajs/react";
 import { Link } from '@inertiajs/react';
 import Popup from "@/Components/Popup";
-import { Inertia } from "@inertiajs/inertia";
 import AdminLayout from "@/Layouts/AdminLayout";
 
 function Index({ roles, flash, permissions }) {
@@ -114,7 +113,6 @@ function Index({ roles, flash, permissions }) {
         deletePermission(route('permissions.destroy', roleId), {
             preserveScroll: true,
         })
-        // setPermissionData({})
 
         setTimeout(() => {
             setShowFlashMessage(false);
@@ -133,23 +131,7 @@ function Index({ roles, flash, permissions }) {
                     <div className="flex flex-col text-center w-full mb-20">
 
 
-                        {showFlashMessage
-                            &&
-
-                            flash.success && (
-                                <div className="bg-green-100 border z-10  fixed right-11 w-[80%] border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-                                    {flash.success}
-                                </div>
-                            )}
-
-                        {
-                            showFlashMessage &&
-                            flash.error && (
-                                <div className="bg-red-100 border z-10 fixed right-11 w-[80%] border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                                    {flash.error}
-                                </div>
-                            )}
-
+                        
 
 
                         <h1 className="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">Role Table</h1>
